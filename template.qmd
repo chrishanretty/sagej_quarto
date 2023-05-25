@@ -1,0 +1,178 @@
+---
+title: A Quarto extension for Sage journals
+format:
+  sagej-pdf:
+    keep-tex: true
+    classoption: [Review,times,sageh]
+journalname: "My SAGE Journal"
+author:
+   - name: Chris Hanretty
+     note: "Dept. of Politics, International Relations and Philosophy, Royal Holloway, University of London. McCrea 1-08, Egham TW20 0EX, United Kingdom." 
+     affiliations:
+       - name: "Royal Holloway, University of London"
+         department: "Department of Politics, International Relations and Philosophy"
+     email: chris.hanretty@rhul.ac.uk
+   - name: Mustrum Ridcully
+     affiliations:
+       - name: Unseen University
+         department: Arch-Chancellory
+abstract: |
+  This document is a template for the sagej extension. It also documents the extension itself, and discusses common usage options.
+thanks: This document based on the sagej.cls documentation prepared by Alistair Smith and Hendrik Wittkopf. 
+keywords: [template, demo]
+bibliography: bibliography.bib
+---
+
+
+# Introduction {#sec-intro}
+
+SAGE Publishing publishes more than 1,000 journals. The company has
+developed a \LaTeX{} template for its journals. This template can be
+found at [the official
+site](https://uk.sagepub.com/sites/default/files/sage_latex_template_4.zip)
+or via
+[Overleaf](https://www.overleaf.com/latex/templates/tagged/sage). Although
+the provision of a \LaTeX{} template can reduce the time spent preparing
+a manuscript, this template needs to be reworked in order to work with
+other document production systems which sit on top of \LaTeX{} and make
+\LaTeX{} more user-friendly. Quarto is one such system. This document
+describes a SAGE template for Quarto which builds upon the existing
+\LaTeX{} template.
+
+I have produced this template for my own use, and I cannot make any
+guarantees about its reliability or suitability for your needs. I have
+tested it for a submission I am preparing, but have not tested it
+beyond that. I note some limitations below, some of which relate to
+the underlying LaTeX template, and some of which are specific to the
+interaction of Quarto and LaTeX.
+
+# What you need to know
+
+When creating a document you will typically want to list a title and
+one or more authors. Although the specification of author details in
+Quarto can be complicated, this template does not use all of that
+complexity, and uses only the `affiliations` and `email`
+fields. "Corresponding authors", for whom a full contact details are
+printed, have an additional `note` attribute.
+
+Other common fields (`abstract`, `thanks`, `keywords` and
+`bibliography`) are also supported. Thanks appear at the end of the
+document.
+
+## Class options
+
+The default class options will work for many journals. However, some
+journals may require further customization. The SAGE journal class
+allows for several different options relating to paper size and
+formatting style. The options for page size are:
+
+ - `shortAfour` [210 x 280mm, 10pt, two-column]
+ - `Afour`      [210 x 297mm, 10pt, , two-column]
+ - `MCfour`     [189 x 246mm, 10pt, , two-column]
+ - `PCfour`     [170 x 242mm, 10pt, , two-column]
+ - `Royal`      [156 x 234mm, 10pt, single-column]
+ - `Crown`      [7.25 x 9.5in, 10pt, single-column]
+ - `Review`     [156 x 234mm, 12pt, single-column]
+
+The options for bibliography are:
+
+ - `sageh`   (SAGE Harvard style (author-year))
+ - `sagev`   (SAGE Vancour style (superscript numbers)) 
+ - `sageapa` (APA style (author-year))
+ 
+
+The default options are `Afour` and `sageh`. The document class
+options shown in the template also specify `times`, which sets the
+main font to Times New Roman and the section font to Helvetica. Note
+that the double column option layout can be very cramped, and so
+authors who use tables or figures may wish to take particular care in
+formatting these. At the moment the default `longtable` environment
+(used by Quarto to set most tables) is turned into a figure, following
+a trick used for the Elsevier journals template.[^elsevier] This can
+lead to sections of content disappeared as they are obscured by the
+figure environment. This is a particular risk where tables appear on
+the first page.
+
+[^elsevier]: See [https://github.com/quarto-journals/elsevier](https://github.com/quarto-journals/elsevier)
+
+
+## Details of implementation
+
+The template follows some of the restrictions which apply to the
+existing Sage template. The \LaTeX{} engine is set to pdflatex rather
+than the more modern xelatex, and so some font features may not be
+available. Similarly, `natbib` and bibliography style files (`.bst`)
+are used to process references rather than more modern systems which
+use CSL. References are otherwise unaffected [@CameronTrivedi2013;
+@hanretty2022party].
+
+Some features of the \LaTeX{} template -- author biographies,
+declarations of competing interests, and funding declarations -- are
+not supported.
+
+## Example table
+
+Often authors want to use Quarto because it allows for literate
+programming, and articles which change when the analysis
+changes. Here's an example table put together with the modelsummary
+package [@msummary].
+
+```{r}
+#| label: tbl-modelsummary
+#| tbl-cap: Modelsummary output
+library(modelsummary)
+library(kableExtra)
+library(gt)
+
+url <- 'https://vincentarelbundock.github.io/Rdatasets/csv/HistData/Guerry.csv'
+dat <- read.csv(url)
+
+models <- list(
+  "OLS"     = lm(Donations ~ Literacy + Clergy, data = dat),
+  "Poisson" = glm(Donations ~ Literacy + Commerce, family = poisson, data = dat)
+)
+
+modelsummary(models)
+```
+
+Table support in two column layouts is extremely brittle, and you may
+find that portions of content disappear when you are trying to fit
+multiple tables in a single page.
+
+## Example figure
+
+I also include an example figure, @fig-literacy. This figure comes in
+one column output. This is achieved by setting the `fig.env` option in
+the relevant R chunk. If you have a beautiful gem of a figure which
+looks good in two-column mode, you need only delete this line in the
+source code.
+
+```{r}
+#| message: false
+#| warning: false
+#| label: fig-literacy
+#| fig-cap: Example figure using the same data
+#| fig.env: figure*
+library(ggplot2)
+ggplot(dat, aes(x = Literacy, y = Donations)) +
+    geom_point() +
+    geom_smooth(method = "lm", se = FALSE) +
+    theme_minimal()
+```
+
+# TO-DO
+
+ - Handle running headers
+ - Handle blinding (comment out for the moment)
+ - Handle other sections (funding, etc.,)
+ 
+# Copyright statement
+
+The original \LaTeX{} class file is \copyright 2016 SAGE Publications
+Ltd, 1 Oliver's Yard, 55 City Road, London, EC1Y 1SP, UK. All rights
+reserved. Class files and bibiliographic style files are included for
+this non-commercial use. This template may not be used on a commercial
+basis.
+
+# References {-}
+
