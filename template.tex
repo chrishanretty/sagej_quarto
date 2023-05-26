@@ -4,7 +4,7 @@
 \PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
 %
 \documentclass[
-  Review,
+  Afour,
   times,
   sageh]{sagej}
 \usepackage{amsmath,amssymb}
@@ -183,12 +183,12 @@
 \def\longtable{\@ifnextchar[\longtable@i \longtable@ii}
 \def\longtable@i[#1]{\begin{figure}[H]
 \onecolumn
-\begin{minipage}{0.5\textwidth}
+\begin{minipage}{\columwidth}
 \oldlt[#1]
 }
 \def\longtable@ii{\begin{figure}[H]
 \onecolumn
-\begin{minipage}{0.5\textwidth}
+\begin{minipage}{\columwidth}
 \oldlt
 }
 \def\endlongtable{\endoldlt
@@ -220,6 +220,7 @@ the extension itself, and discusses common usage options.
 
 \def\journalname{My SAGE Journal}
 
+
 \begin{document}
 
 
@@ -232,7 +233,7 @@ This document is a template for the sagej extension. It also documents
 the extension itself, and discusses common usage options.
 \end{abstract}
 
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[breakable, borderline west={3pt}{0pt}{shadecolor}, sharp corners, boxrule=0pt, interior hidden, enhanced, frame hidden]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[breakable, frame hidden, borderline west={3pt}{0pt}{shadecolor}, sharp corners, interior hidden, boxrule=0pt, enhanced]}{\end{tcolorbox}}\fi
 
 \hypertarget{sec-intro}{%
 \section{Introduction}\label{sec-intro}}

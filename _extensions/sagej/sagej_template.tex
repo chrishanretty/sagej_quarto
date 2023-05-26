@@ -371,12 +371,12 @@ $endif$
 \def\longtable{\@ifnextchar[\longtable@i \longtable@ii}
 \def\longtable@i[#1]{\begin{figure}[H]
 \onecolumn
-\begin{minipage}{0.5\textwidth}
+\begin{minipage}{\columwidth}
 \oldlt[#1]
 }
 \def\longtable@ii{\begin{figure}[H]
 \onecolumn
-\begin{minipage}{0.5\textwidth}
+\begin{minipage}{\columwidth}
 \oldlt
 }
 \def\endlongtable{\endoldlt

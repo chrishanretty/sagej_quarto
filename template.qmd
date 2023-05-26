@@ -3,7 +3,7 @@ title: A Quarto extension for Sage journals
 format:
   sagej-pdf:
     keep-tex: true
-    classoption: [Review,times,sageh]
+    classoption: [Afour,times,sageh]
 journalname: "My SAGE Journal"
 author:
    - name: Chris Hanretty
