@@ -4,6 +4,8 @@ format:
   sagej-pdf:
     keep-tex: true
     classoption: [Afour,times,sageh]
+    header-includes:
+      - \newcommand{\pandocbounded}[1]{#1}
 journalname: "My SAGE Journal"
 author:
    - name: Chris Hanretty
@@ -175,4 +177,3 @@ this non-commercial use. This template may not be used on a commercial
 basis.
 
 # References {-}
-
