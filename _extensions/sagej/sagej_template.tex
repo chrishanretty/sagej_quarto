@@ -366,22 +366,34 @@ $endif$
 
 \usepackage{float}
 \makeatletter
+\if@twocolumn
+\newcommand{\whencolumns}[2]{
+#2
+}
+\else
+\newcommand{\whencolumns}[2]{
+#1
+}
+\fi
+\makeatother
+
+\makeatletter
 \let\oldlt\longtable
 \let\endoldlt\endlongtable
 \def\longtable{\@ifnextchar[\longtable@i \longtable@ii}
 \def\longtable@i[#1]{\begin{figure}[H]
-\onecolumn
-\begin{minipage}{\columwidth}
+\whencolumns{}{\onecolumn}
+\begin{minipage}{\columnwidth}
 \oldlt[#1]
 }
 \def\longtable@ii{\begin{figure}[H]
-\onecolumn
-\begin{minipage}{\columwidth}
+\whencolumns{}{\onecolumn}
+\begin{minipage}{\columnwidth}
 \oldlt
 }
 \def\endlongtable{\endoldlt
 \end{minipage}
-\twocolumn
+\whencolumns{}{\twocolumns}
 \end{figure}}
 \makeatother
 
