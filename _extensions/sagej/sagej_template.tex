@@ -7,18 +7,7 @@ $endif$
 $if(CJKmainfont)$
 \PassOptionsToPackage{space}{xeCJK}
 $endif$
-%
-\documentclass[
-$if(fontsize)$
-  $fontsize$,
-$endif$
-$if(papersize)$
-  $papersize$paper,
-$endif$
-$for(classoption)$
-  $classoption$$sep$,
-$endfor$
-]{sagej}
+\documentclass[$if(fontsize)$$fontsize$,$endif$$if(papersize)$$papersize$paper, $endif$$for(classoption)$$classoption$$sep$,$endfor$]{sagej}
 \usepackage{amsmath,amssymb}
 $if(linestretch)$
 \usepackage{setspace}
